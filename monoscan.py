@@ -1,6 +1,5 @@
 # Original framework by N. "I just wanna fly" Nell
 # Crappy edits provided by N. "Lushpuppy Facetat" Kruczek
-# v0.9
 
 import serial
 import numpy as np
@@ -13,7 +12,7 @@ def integration(mp, cp, fname, sa_pos):
 
     pkuplam = '118.0'
     # Wavelengths for scan
-    LAMBDA = ['0.0', '65.0', pskuplam, '65.0', '0.0']
+    LAMBDA = ['0.0', '65.0', pkuplam, '65.0', '0.0']
 
     # Number of samples to average per wavelength
     N = 5
@@ -62,7 +61,7 @@ def integration(mp, cp, fname, sa_pos):
     # Dark is assumed to be the average of the values measured on either
     # side of the light measurement
     dark_avg = (flux[1] + flux[3]) / 2.0
-    dark_std = sqrt( (fstd[1]**2 + fstd[3]**2) / 4.0)
+    dark_std = np.sqrt( (fstd[1]**2 + fstd[3]**2) / 4.0)
 
     dat.write(sa_pos + ',' + str(flux[2]) + ',' + str(fstd[2]) + ','
                 + str(dark_avg) + ',' + str(dark_std) + ',' + str(dt[2]) + '\n')

@@ -1,12 +1,13 @@
 # N. "Lushpuppy Facetat" Kruczek
-# v0.9
+
+# Contains all of the motion control functions for stages that are run through
+# the Klinger CC1.2 controllers
 
 import time
 
 ## Credit N. Nell for the serial stuff
 def write(s, m):
 
-    #### \n could need to be \r???
     m = bytes(m + "\n", "utf-8")
     s.write(m)
 
@@ -28,7 +29,7 @@ def read(s):
 # Set (R)ate, (S)lope, and step rate (F)actor, which define how a stage
 # accelerates and what its max and min speeds are. Those values are used
 # for timing how long a motion will take.
-def setRate(s, stage, R, S, F):
+def set_rate(s, stage, R, S, F):
     write(s, "R " + str(R))
     write(s, "S " + str(S))
     write(s, "F " + str(F))
@@ -53,7 +54,7 @@ def setRate(s, stage, R, S, F):
 # an expected amount of time until the motion will be finished. This allows the
 # meta-code to move all of the stages at once and then wait for the longest
 # running stage to finish.
-def moveRelative(s, stage, dist, SD):
+def move_relative(s, stage, dist, SD):
 
     # Find out where the stage is currently and calculate where it should end up
     # Note - since function does not wait for motion to finish, stage position
@@ -140,7 +141,7 @@ def moveRelative(s, stage, dist, SD):
 
 # Straight forward. Meta code handles addressing the correct board, since
 # you need to talk to the TK-2 boards in the Klinger boxes.
-def getPosition(s, axis):
+def get_position(s, axis):
 
     pos_st = read(s)
 
@@ -153,7 +154,7 @@ def getPosition(s, axis):
 # positive motions are allowed relative to it, so that isn't necessary.
 # Function remains so that the functionality can be introduced if desired,
 # but should be tested first
-def setHome(s, stage, pos):
+def set_home(s, stage, pos):
     print("\nSetting " + stage + " home at " + str(pos) + "\n")
     write(s, "A")
 
@@ -164,7 +165,7 @@ def setHome(s, stage, pos):
 # because negative absolute positions are not allowed (as far as I can tell
 # from the manual). Function remains so that it can be introduced if desired,
 # but should be tested first.
-def moveAbsolute(s, stage, pos, old_pos, home, max):
+def move_absolute(s, stage, pos, old_pos, home, max):
     if home < -9999999:
         print("\n !! " + stage + " home has not been set. Cannot move\n")
 

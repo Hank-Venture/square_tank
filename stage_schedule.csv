@@ -1,7 +1,5 @@
-"# Reminder: Enter FINAL positions in each box, not distances",,,
-"# If a stage should not move, its number should be the same between two boxes.",,,
+#,Reminder: Enter FINAL positions in each box,,
+#,If a stage should not move  its number should be the same between two boxes,,
 #SA,UTM,ROT,MTM
-1600,100,0,15000
-0,0,0,1600
-1600,100,0,0
-0,0,0,1
+0,0,0,0
+0,0,0,0

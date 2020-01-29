@@ -1,7 +1,9 @@
 # N. "Lushpuppy Facetat" Kruczek
-# v0.9
 
-import serial
+# Top level code for running a fully automated square tank measurement run.
+# Sends out motion and integration commands.
+
+#import serial
 import numpy as np
 import sys
 import vm502
@@ -32,11 +34,11 @@ def main(mono_port, counter_port, motor_conn, fname, SD, isPrac):
     # Read in all of the positions as a list of lists
     stage_pos = np.loadtxt(CNTRL_FL, delimiter = ',')
 
-    for i in range(1, len(stage_pos)):
+    for i in range(0, len(stage_pos)):
         # Move all of the stages to the positions listed in CNTRL_FL
         # Note that file contains FINAL positions. Code handles converting
         # that into the correct relative movement.
-        SD, wait_t = auto.moveStages(motor_conn, stage_pos[i], SD, stage_ord)
+        SD, wait_t = auto.move_stages(motor_conn, stage_pos[i], SD, stage_ord)
 
         # moveStages returns the longest wait time for all of the motions.
         # Wait that amount of time for the movement process to complete
@@ -45,19 +47,25 @@ def main(mono_port, counter_port, motor_conn, fname, SD, isPrac):
         # Stage motion can be imperfect so, once stages have moved, make sure
         # they all ended up in the correct locations. This function also
         # serves as a secondary check to the wait time above.
-        SD = auto.checkPositions(motor_conn, SD, stage_ord)
+        SD = auto.check_positions(motor_conn, SD, stage_ord)
 
         # This might help the noise caused by the MTM, we will see.
-        ncl.turnOffMotor(motor_conn, 'MTM', SD['MTM']['axis'])
+        ncl.turn_off_motor(motor_conn, 'MTM', SD['MTM']['axis'])
 
         if isPrac:
-            print('\nStep ' + str(i) + ' of ' + str(len(stage_pos)) +
-                    ' complete. Move to next position?')
-            nextStep = input('Y - Move again, N - exit code: ')
-
-            if nextStep == 'N':
+            if (i+1) == len(stage_pos):
+                print('Completed all motions. Exiting')
                 motor_conn.close()
                 exit()
+
+            else:
+                print('\nStep ' + str(i+1) + ' of ' + str(len(stage_pos)) +
+                        ' complete. Move to next position?')
+                nextStep = input('Y - Move again, N - exit code: ')
+
+                if nextStep == 'N':
+                    motor_conn.close()
+                    exit()
 
         else:
             # Get them counts
@@ -68,6 +76,8 @@ def main(mono_port, counter_port, motor_conn, fname, SD, isPrac):
             do_a_check = randint(0,100)
             if do_a_check == 1:
                 input('You here? Hit enter to continue')
+
+    motor_conn.close()
 
 if __name__ == '__main__':
     if (len(sys.argv) < 6):
@@ -114,7 +124,7 @@ if __name__ == '__main__':
 
     if user_accept == 'ok':
 
-        cmd, SD = auto.initStages(control_port)
+        cmd, SD = auto.init_stages(control_port)
 
         print("Saving to file: {0:s}".format(fname))
 

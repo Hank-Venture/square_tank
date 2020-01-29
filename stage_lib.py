@@ -1,5 +1,4 @@
 # N. "Lushpuppy Facetat" Kruczek
-# v0.9
 
 import control_library_gpib_klinger as cl
 import control_library_gpib_newport as ncl

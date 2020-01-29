@@ -1,0 +1,5 @@
+- Work out MTM acceleration
+- Add the monochromator and the counter to the GPIB bus
+- Figure out MTM positive limit issue (stops at some non-zero number). 
+  Current fix just sets the position to some small non-zero number that 
+  the stage can move to after hitting the limit.

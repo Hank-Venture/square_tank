@@ -132,12 +132,12 @@ def move_relative(s, stage, dist, SD):
 
         # The rest of the time is spent at high speed
         hispd_time = (dist - SD[stage]["acc_step"]) / SD[stage]["hi_step"]
-        tot_time = ramp_time + hispd_time
+        tot_time = abs(ramp_time + hispd_time)
 
     print("\n" + stage + " will finish moving in " + str(round(tot_time,1)) +
             " sec.\n")
 
-    return new_pos, time.time(), abs(tot_time)
+    return new_pos, time.time(), tot_time
 
 # Straight forward. Meta code handles addressing the correct board, since
 # you need to talk to the TK-2 boards in the Klinger boxes.

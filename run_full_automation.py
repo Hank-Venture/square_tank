@@ -81,7 +81,7 @@ def main(mono_port, counter_port, motor_conn, fname, SD, isPrac):
 
 if __name__ == '__main__':
     if (len(sys.argv) < 6):
-        print("Usage: monopmtd2scan.py <mono port> <counter port>"
+        print("Usage: run_full_automation.py <mono port> <counter port>"
                 "<control port> filename practicerun")
         print("Where: ")
         print("<> indicates an associated COM port")
